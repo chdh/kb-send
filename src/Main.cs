@@ -85,23 +85,38 @@ private static void PrepareTargetWindow() {
    if (targetWindow == default) {
       throw new SimpleException("Unable to determine target window."); }}
 
+private static void verifyFocustWindow() {
+   if (WinUtils.GetForegroundWindow() != targetWindow) {
+      throw new SimpleException("Target window has lost focus."); }}
+
+private static void sendLine (string s) {
+   const int chunkSize = 10;
+   int p = 0;
+   while (p < s.Length) {
+      verifyFocustWindow();
+      int len = Math.Min(s.Length - p, chunkSize);
+      NativeKeyboard.SendChars(s.Substring(p, len));
+      p += len;
+      if (CommandLine.charDelay > 0) {
+         Thread.Sleep((int)Math.Ceiling(len * CommandLine.charDelay)); }}}
+
 private static void SendKbText() {
    int eolCount = 0;
    int kbTextPos = 0;
    while (kbTextPos < kbText.Length) {
-      if (WinUtils.GetForegroundWindow() != targetWindow) {
-         throw new SimpleException("Target window has lost focus."); }
       string line = Utils.scanTextLine(kbText, ref kbTextPos);
-      NativeKeyboard.SendChars(line);
+      sendLine(line);
       if (kbTextPos >= kbText.Length) {
          break; }
+      verifyFocustWindow();
       NativeKeyboard.SendKey(NativeKeyboard.VK_ENTER);
       if (CommandLine.sendHomeKeyOpt && line.Length > 0 && line[0] == ' ') {
          NativeKeyboard.SendKey(NativeKeyboard.VK_HOME); }
-      int charCount = line.Length + 2;
       eolCount++;
       Console.Write(".");
-      Thread.Sleep((int)Math.Ceiling(CommandLine.lineDelay + charCount * CommandLine.charDelay)); }
+      if (CommandLine.lineDelay > 0) {
+         verifyFocustWindow();
+         Thread.Sleep((int)Math.Ceiling(CommandLine.lineDelay)); }}
    if (eolCount > 0) {
       Console.WriteLine(); }}
 
