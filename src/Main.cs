@@ -109,6 +109,8 @@ private static void SendKbText() {
       if (kbTextPos >= kbText.Length) {
          break; }
       verifyFocustWindow();
+      if (CommandLine.sendEscKeyOpt && line.Length > 0 && line[line.Length - 1] != ' ') {
+         NativeKeyboard.SendKey(NativeKeyboard.VK_ESCAPE); }
       NativeKeyboard.SendKey(NativeKeyboard.VK_ENTER);
       if (CommandLine.sendHomeKeyOpt && line.Length > 0 && line[0] == ' ') {
          NativeKeyboard.SendKey(NativeKeyboard.VK_HOME); }

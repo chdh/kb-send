@@ -13,6 +13,7 @@ public  const int  VK_SHIFT           = 0x10;
 public  const int  VK_CONTROL         = 0x11;
 public  const int  VK_MENU            = 0x12;
 public  const int  VK_HOME            = 0x24;
+public  const int  VK_ESCAPE          = 0x1B;
 // Non-standard key code constants:
 public  const int  VK_ENTER           = VK_RETURN;
 public  const int  VK_ALT             = VK_MENU;

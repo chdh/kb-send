@@ -24,6 +24,7 @@ public static string         windowExeArg;
 public static double         charDelay;
 public static double         lineDelay;
 public static bool           sendHomeKeyOpt;
+public static bool           sendEscKeyOpt;
 public static bool           listWindowsOpt;
 public static bool           helpOpt;
 
@@ -74,6 +75,9 @@ public static void DisplayHelp() {
    Console.WriteLine("-sendHomeKey");
    Console.WriteLine("   Sends HOME after ENTER when the previous line started with blanks.");
    Console.WriteLine("   This is necessary when line indent is inherited from the line above.");
+   Console.WriteLine("-sendEscKey");
+   Console.WriteLine("   Sends ESC before ENTER at end of line.");
+   Console.WriteLine("   This is necessary to close a popup e.g. for Microsoft SQL Server Management Studio.");
    Console.WriteLine("-listWindows");
    Console.WriteLine("   Lists window titles and EXE file names of the desktop windows.");
    Console.WriteLine("-help");
@@ -128,6 +132,9 @@ private static void parseArgs() {
             break; }
          case "-sendHomeKey": {
             sendHomeKeyOpt = true;
+            break; }
+         case "-sendEscKey": {
+            sendEscKeyOpt = true;
             break; }
          case "-listWindows": {
             listWindowsOpt = true;
