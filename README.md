@@ -54,6 +54,9 @@ Example for copying text from the clipboard to the Citrix Client:
 -sendHomeKey
    Sends HOME after ENTER when the previous line started with blanks.
    This is necessary when line indent is inherited from the line above.
+-sendEscKey
+   Sends ESC before ENTER at end of line.
+   This is necessary to close a popup e.g. for Microsoft SQL Server Management Studio.
 -listWindows
    Lists window titles and EXE file names of the desktop windows.
 -help
