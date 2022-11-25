@@ -1,3 +1,5 @@
+using Console                = System.Console;
+
 using Encoding               = System.Text.Encoding;
 using IntPtr                 = System.IntPtr;
 using Win32Exception         = System.ComponentModel.Win32Exception;
@@ -42,14 +44,18 @@ public static string getText() {
          throw new Win32Exception(); }
       var buf = new byte[objSize];
       Marshal.Copy(objPtr, buf, 0, objSize);
-      var len = objSize;
-      if (len >= 2 && buf[len - 1] == 0 && buf[len - 2] == 0) {
-         len -= 2; }
+      var len = findUnicodeStringByteLen(buf, objSize);
       return Encoding.Unicode.GetString(buf, 0, len); }
     finally {
       if (objPtr != default) {
          GlobalUnlock(objPtr); }
       if (clipboardIsOpen) {
          CloseClipboard(); }}}
+
+private static int findUnicodeStringByteLen (byte[] buf, int len) {
+   for (int p = 0; p < len - 1; p += 2) {
+      if (buf[p] == 0 && buf[p + 1] == 0) {
+         return p; }}
+   return len; }
 
 }
